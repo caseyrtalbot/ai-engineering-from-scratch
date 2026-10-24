@@ -215,4 +215,24 @@ gh pr create --title "feat(phase-NN/MM): add <slug>" --body "<5-line summary>"
 
 ---
 
+## Cursor Cloud specific instructions
+
+The public site is static HTML in `site/`. Cloud Agent boot serves it at `http://127.0.0.1:3000` (`python3 -m http.server 3000 --bind 0.0.0.0 --directory site`). After edits to `README.md`, `ROADMAP.md`, or `glossary/terms.md`, rebuild with `node site/build.js`. That command rewrites the timestamp in `site/data.js`; leave the generated file for CI unless the structural content changed.
+
+Python lesson libraries live in the user site (`~/.local`), including the CPU PyTorch wheel from `https://download.pytorch.org/whl/cpu`. Check with `python3 -c "import torch; print(torch.__version__)"`.
+
+TypeScript lessons run with `/usr/local/bin/tsx` (`tsx code/main.ts`). Capstone packages under `phases/19-capstone-projects/*/code/ts` install with `npm install --no-package-lock` because lockfiles are not tracked.
+
+Julia 1.11 is `/usr/local/bin/julia`. Rust lessons compile with `rustc --edition 2021`.
+
+`scripts/check_readme_counts.py` reads gitignored `catalog.json`. Build it first:
+
+```bash
+python3 scripts/build_catalog.py
+python3 scripts/check_readme_counts.py
+python3 scripts/audit_lessons.py
+```
+
+---
+
 Last reviewed: 2026-05-27.
